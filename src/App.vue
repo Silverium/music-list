@@ -38,20 +38,22 @@
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/about">About</router-link>
+      <router-view />
     </v-content>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+// import HelloWorld from './components/HelloWorld.vue';
 
 export default Vue.extend({
   name: 'App',
 
   components: {
-    HelloWorld,
+    // HelloWorld,
   },
 
   data: () => ({

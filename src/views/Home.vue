@@ -1,18 +1,32 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <v-list>
+      <v-list-item
+        v-for="song in songs"
+        :key="song.id.label"
+      >
+        {{song.title.label}}
+      </v-list-item>
+    </v-list>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld,
+  components: {},
+  computed: {
+    ...mapState({
+      songs: (state) => state.songs,
+    }),
+  },
+  methods: {
+    ...mapActions(['getSongs']),
+  },
+  beforeMount() {
+    this.getSongs();
   },
 };
 </script>
