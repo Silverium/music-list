@@ -17,7 +17,7 @@
 
         <p class="subheading font-weight-regular">
           For help and collaboration with other Vuetify developers,
-          <br>please join our online
+          <br />please join our online
           <a
             href="https://community.vuetifyjs.com"
             target="_blank"
@@ -145,7 +145,8 @@ export default Vue.extend({
       },
       {
         text: 'Frequently Asked Questions',
-        href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
+        href:
+          'https://vuetifyjs.com/getting-started/frequently-asked-questions',
       },
     ],
   }),
