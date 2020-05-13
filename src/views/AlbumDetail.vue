@@ -1,24 +1,27 @@
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import { Album } from '../store/types';
 
 export default Vue.extend({
   name: 'AlbumDetail',
-  created() {
+  async created() {
     try {
-      if (!this.$store.state.albums[this.$route.params.id]) throw new Error('Album does not exist');
+      if (!this.$store.state.albumSelected) await this.getAlbums();
+      const selectedAlbum = this.$store.state.albums.find((album: Album) => album.id.attributes['im:id'] === this.$route.params.id);
+      if (selectedAlbum === -1) throw new Error('Album does not exist');
+      this.$store.commit('setAlbumSelected', selectedAlbum);
     } catch (error) {
-      this.getAlbums();
+      console.info('%cvariable: error', 'background-color: lime;', error);
+
+      this.$store.commit('addError', error);
+      this.$router.push('/');
     }
   },
   computed: {
-    album() {
-      try {
-        return this.$store.state.albums[this.$route.params.id];
-      } catch (error) {
-        return null;
-      }
-    },
+    ...mapState({
+      album: 'albumSelected',
+    }),
 
   },
   methods: {
@@ -32,7 +35,49 @@ export default Vue.extend({
       <v-col cols="2">
         <v-img :src="album['im:image'][2].label"></v-img>
       </v-col>
-      <v-col cols="10">List of songs of - {{album.title.label}}</v-col>
+      <v-col cols="10">
+        <v-list>
+          <h1>{{album.title.label}}</h1>
+          <v-list-item>
+            {{album['im:price'].label}}
+          </v-list-item>
+          <v-list-item
+            :href="album.link.attributes.href"
+            target="_system"
+          >
+            {{album['im:itemCount'].label}} songs in Album
+            <v-icon
+              color="grey lighten-1"
+              class="ml-2"
+            >mdi-apple</v-icon> Music
+            <v-icon
+              color="grey lighten-1"
+              class="ml-2"
+            >mdi-open-in-new</v-icon>
+          </v-list-item>
+          <v-list-item
+            v-if="album['im:artist'].attributes"
+            :href="album['im:artist'].attributes.href"
+            target="_system"
+          >
+            About {{album['im:artist'].label}}
+            <v-icon
+              color="grey lighten-1"
+              class="ml-2"
+            >mdi-apple</v-icon> Music
+            <v-icon
+              color="grey lighten-1"
+              class="ml-2"
+            >mdi-open-in-new</v-icon>
+          </v-list-item>
+          <v-list-item>
+            Released on {{album['im:releaseDate'].attributes.label}}
+          </v-list-item>
+          <v-list-item>
+            {{album.rights.label}}
+          </v-list-item>
+        </v-list>
+      </v-col>
     </v-row>
     <v-skeleton-loader
       v-else
@@ -40,6 +85,5 @@ export default Vue.extend({
       tile
       class="mx-auto"
     ></v-skeleton-loader>
-    <pre>{{ album }}</pre>
   </v-container>
 </template>

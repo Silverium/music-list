@@ -1,3 +1,35 @@
+<script>
+import { mapState, mapActions } from 'vuex';
+import { fuzzyFilter } from '@/utils/fuzzyFilter';
+
+export default {
+  name: 'Home',
+  components: {},
+  computed: {
+    ...mapState(['albums']),
+    filteredAlbums() {
+      const query = this.$store.state.albumsSearch;
+      return this.albums.filter((album) => fuzzyFilter(query, album.title.label));
+    },
+  },
+  methods: {
+    ...mapActions(['getAlbums']),
+    onAlbumSelected(album) {
+      this.$store.commit('setAlbumSelected', album);
+      this.$router.push(`album/${album.id.attributes['im:id']}`);
+    },
+  },
+  beforeMount() {
+    try {
+      if (!this.$store.state.albums.length) throw new Error('Albums are not populated');
+    } catch (error) {
+      this.$store.commit('addError', error);
+      this.getAlbums();
+    }
+  },
+};
+</script>
+
 <template>
   <div class="home">
     <v-container v-if="albums">
@@ -32,35 +64,3 @@
     ></v-skeleton-loader>
   </div>
 </template>
-
-<script>
-import { mapState, mapActions } from 'vuex';
-import { fuzzyFilter } from '@/utils/fuzzyFilter';
-
-export default {
-  name: 'Home',
-  components: {},
-  computed: {
-    ...mapState(['albums']),
-    filteredAlbums() {
-      const query = this.$store.state.albumsSearch;
-      return this.albums.filter((album) => fuzzyFilter(query, album.title.label));
-    },
-  },
-  methods: {
-    ...mapActions(['getAlbums']),
-    onAlbumSelected(album) {
-      this.$store.commit('setAlbumSelected', album);
-      this.$router.push(`album/${album.id.attributes['im:id']}`);
-    },
-  },
-  beforeMount() {
-    try {
-      if (!this.$store.state.albums.length) throw new Error('Albums are not populated');
-    } catch (error) {
-      this.$store.commit('addError', error);
-      this.getAlbums();
-    }
-  },
-};
-</script>
