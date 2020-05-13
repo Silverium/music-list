@@ -5,24 +5,24 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    songs: [],
+    albums: [],
     errors: [],
   },
   mutations: {
-    setSongs(state, payload) {
-      state.songs = payload;
+    setalbums(state, payload) {
+      state.albums = payload;
     },
     addError(state, payload) {
       state.errors = state.errors.concat(payload);
     },
   },
   actions: {
-    async getSongs({ commit }) {
+    async getAlbums({ commit }) {
       try {
-        const { feed: { entry: songs } } = await (await fetch('https://itunes.apple.com/us/rss/topalbums/limit=100/json')).json();
-        console.info('%cvariable: songs', 'background-color: lime;', songs);
+        const { feed: { entry: albums } } = await (await fetch('https://itunes.apple.com/us/rss/topalbums/limit=100/json')).json();
+        console.info('%cvariable: albums', 'background-color: lime;', albums);
 
-        commit('setSongs', songs);
+        commit('setalbums', albums);
       } catch (error) {
         commit('addError', error);
       }
