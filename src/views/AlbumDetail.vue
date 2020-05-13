@@ -1,6 +1,6 @@
 <script lang="ts">
 import Vue from 'vue';
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default Vue.extend({
   name: 'AlbumDetail',
@@ -12,11 +12,14 @@ export default Vue.extend({
     }
   },
   computed: {
-    ...mapState({
-      album(state: any) {
-        return state.albums[this.$route.params.id];
-      },
-    }),
+    album() {
+      try {
+        return this.$store.state.albums[this.$route.params.id];
+      } catch (error) {
+        return null;
+      }
+    },
+
   },
   methods: {
     ...mapActions(['getAlbums']),
@@ -25,15 +28,18 @@ export default Vue.extend({
 </script>
 <template>
   <v-container>
-    <v-row>
+    <v-row v-if="album">
       <v-col cols="2">
-        <v-img
-          v-if="album"
-          :src="album['im:image'][2].label"
-        ></v-img>
+        <v-img :src="album['im:image'][2].label"></v-img>
       </v-col>
       <v-col cols="10">List of songs of - {{album.title.label}}</v-col>
     </v-row>
+    <v-skeleton-loader
+      v-else
+      type="list-item-avatar-three-line"
+      tile
+      class="mx-auto"
+    ></v-skeleton-loader>
     <pre>{{ album }}</pre>
   </v-container>
 </template>

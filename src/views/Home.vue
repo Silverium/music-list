@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <v-container>
+    <v-container v-if="albums">
       <v-list-item
         v-for="(album, albumIndex) in albums"
         :key="album.id.label"
@@ -22,6 +22,14 @@
         </v-list-item-action>
       </v-list-item>
     </v-container>
+    <v-skeleton-loader
+      v-else
+      v-for="time of 10"
+      :key="time"
+      type="list-item-avatar"
+      tile
+      class="mx-auto"
+    ></v-skeleton-loader>
   </div>
 </template>
 
@@ -32,9 +40,7 @@ export default {
   name: 'Home',
   components: {},
   computed: {
-    ...mapState({
-      albums: (state) => state.albums,
-    }),
+    ...mapState(['albums']),
   },
   methods: {
     ...mapActions(['getAlbums']),
