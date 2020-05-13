@@ -1,13 +1,27 @@
 <template>
   <div class="home">
-    <v-list>
+    <v-container>
       <v-list-item
-        v-for="song in songs"
-        :key="song.id.label"
+        v-for="(album, albumIndex) in albums"
+        :key="album.id.label"
+        @click="$router.push(`album/${albumIndex}`)"
       >
-        {{song.title.label}}
+        <v-list-item-icon>
+          <v-img
+            v-if="album"
+            :src="album['im:image'][0].label"
+          ></v-img>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title> {{albumIndex + 1}} - {{album.title.label}}</v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action>
+          <v-btn icon>
+            <v-icon color="grey lighten-1">mdi-information</v-icon>
+          </v-btn>
+        </v-list-item-action>
       </v-list-item>
-    </v-list>
+    </v-container>
   </div>
 </template>
 
@@ -19,14 +33,18 @@ export default {
   components: {},
   computed: {
     ...mapState({
-      songs: (state) => state.songs,
+      albums: (state) => state.albums,
     }),
   },
   methods: {
-    ...mapActions(['getSongs']),
+    ...mapActions(['getAlbums']),
   },
   beforeMount() {
-    this.getSongs();
+    try {
+      if (!this.$store.state.albums.length) throw new Error('Albums are not populated');
+    } catch (error) {
+      this.getAlbums();
+    }
   },
 };
 </script>
