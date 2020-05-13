@@ -1,16 +1,25 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { RootState } from './types';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+export default new Vuex.Store<RootState>({
   state: {
     albums: [],
     errors: [],
+    albumsSearch: '',
+    albumSelected: undefined,
   },
   mutations: {
-    setalbums(state, payload) {
+    setAlbums(state, payload) {
       state.albums = payload;
+    },
+    setAlbumsSearch(state, payload) {
+      state.albumsSearch = payload;
+    },
+    setAlbumSelected(state, payload) {
+      state.albumSelected = payload;
     },
     addError(state, payload) {
       state.errors = state.errors.concat(payload);
@@ -20,9 +29,7 @@ export default new Vuex.Store({
     async getAlbums({ commit }) {
       try {
         const { feed: { entry: albums } } = await (await fetch('https://itunes.apple.com/us/rss/topalbums/limit=100/json')).json();
-        console.info('%cvariable: albums', 'background-color: lime;', albums);
-
-        commit('setalbums', albums);
+        commit('setAlbums', albums);
       } catch (error) {
         commit('addError', error);
       }

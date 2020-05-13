@@ -5,41 +5,32 @@
       color="primary"
       dark
     >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+      <v-btn
+        color="primary"
+        class="d-flex align-center"
+        @click="goHome"
+      >
+        <v-icon>mdi-music-box-multiple</v-icon>
+
+        Albums list
+      </v-btn>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-text-field
+        :value="$store.state.albumsSearch"
+        outlined
+        label="Search"
+        clearable
+        single-line
+        hide-details
+        append-icon="mdi-magnify"
+        @input="updateAlbumsSearch"
+      ></v-text-field>
     </v-app-bar>
 
     <v-content>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
       <router-view />
     </v-content>
   </v-app>
@@ -47,17 +38,19 @@
 
 <script lang="ts">
 import Vue from 'vue';
-// import HelloWorld from './components/HelloWorld.vue';
 
 export default Vue.extend({
   name: 'App',
-
-  components: {
-    // HelloWorld,
+  created() {
+    console.info('%cvariable: this', 'background-color: lime;', this);
   },
-
-  data: () => ({
-    //
-  }),
+  methods: {
+    goHome() {
+      if (this.$route.path !== '/') this.$router.push('/');
+    },
+    updateAlbumsSearch(payload: string) {
+      this.$store.commit('setAlbumsSearch', payload);
+    },
+  },
 });
 </script>
