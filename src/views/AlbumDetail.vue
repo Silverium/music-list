@@ -12,8 +12,6 @@ export default Vue.extend({
       if (selectedAlbum === -1) throw new Error('Album does not exist');
       this.$store.commit('setAlbumSelected', selectedAlbum);
     } catch (error) {
-      console.info('%cvariable: error', 'background-color: lime;', error);
-
       this.$store.commit('addError', error);
       this.$router.push('/');
     }

@@ -41,9 +41,6 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'App',
-  created() {
-    console.info('%cvariable: this', 'background-color: lime;', this);
-  },
   methods: {
     goHome() {
       if (this.$route.path !== '/') this.$router.push('/');
