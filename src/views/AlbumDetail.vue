@@ -30,12 +30,18 @@ export default Vue.extend({
 <template>
   <v-container>
     <v-row v-if="album">
-      <v-col cols="2">
+      <v-col
+        cols="12"
+        sm="2"
+      >
         <v-img :src="album['im:image'][2].label"></v-img>
       </v-col>
-      <v-col cols="10">
+      <v-col
+        cols="12"
+        sm="10"
+      >
         <v-list>
-          <h1>{{album.title.label}}</h1>
+          <h2>{{album.title.label}}</h2>
           <v-list-item>
             {{album['im:price'].label}}
           </v-list-item>
