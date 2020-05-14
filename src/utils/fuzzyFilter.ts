@@ -17,3 +17,7 @@ export const fuzzyFilter = (word: string, source: string, options = { typos: 1, 
 
   return source.match(new RegExp(finalExpression, 'gi'));
 };
+
+export const Factory = (options = {
+  typos: 1, minChars: 3,
+}) => (word: string, source: string) => fuzzyFilter(word, source, options);
