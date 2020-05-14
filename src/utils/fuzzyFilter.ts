@@ -1,5 +1,6 @@
 export const escapedRegexCharacters = /[\\.+=?!:[\](){}\-$*&|/]/g;
 export const fuzzyFilter = (word: string, source: string, options = { typos: 1, minChars: 3 }) => {
+  if (!word) return true;
   const expressions = [];
   const { typos = 1, minChars = 3 } = options;
   const trimmed = String(word).trim();

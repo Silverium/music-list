@@ -4,12 +4,17 @@ import { fuzzyFilter } from '@/utils/fuzzyFilter';
 
 export default {
   name: 'Home',
-  components: {},
+  data() {
+    return {
+      rankedAlbums: [],
+    };
+  },
   computed: {
     ...mapState(['albums']),
     filteredAlbums() {
       const query = this.$store.state.albumsSearch;
-      return this.albums.filter((album) => fuzzyFilter(query, album.title.label));
+      return this.rankedAlbums
+        .filter((album) => fuzzyFilter(query, album.title.label));
     },
   },
   methods: {
@@ -17,6 +22,11 @@ export default {
     onAlbumSelected(album) {
       this.$store.commit('setAlbumSelected', album);
       this.$router.push(`album/${album.id.attributes['im:id']}`);
+    },
+  },
+  watch: {
+    albums(current) {
+      this.rankedAlbums = current.map((e, index) => { e.rank = index + 1; return e; });
     },
   },
   beforeMount() {
@@ -34,7 +44,7 @@ export default {
   <div class="home">
     <v-container v-if="albums">
       <v-list-item
-        v-for="(album, albumIndex) in filteredAlbums"
+        v-for="album in filteredAlbums"
         :key="album.id.label"
         @click="onAlbumSelected(album)"
       >
@@ -45,7 +55,7 @@ export default {
           ></v-img>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title> {{albumIndex + 1}} - {{album.title.label}}</v-list-item-title>
+          <v-list-item-title> {{album.rank}} - {{album.title.label}}</v-list-item-title>
         </v-list-item-content>
         <v-list-item-action>
           <v-btn icon>
