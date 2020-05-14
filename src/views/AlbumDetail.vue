@@ -41,7 +41,7 @@ export default Vue.extend({
           </v-list-item>
           <v-list-item
             :href="album.link.attributes.href"
-            target="_system"
+            target="_blank"
           >
             {{album['im:itemCount'].label}} songs in Album
             <v-icon
@@ -56,7 +56,7 @@ export default Vue.extend({
           <v-list-item
             v-if="album['im:artist'].attributes"
             :href="album['im:artist'].attributes.href"
-            target="_system"
+            target="_blank"
           >
             About {{album['im:artist'].label}}
             <v-icon
