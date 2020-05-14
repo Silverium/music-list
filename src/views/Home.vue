@@ -25,8 +25,11 @@ export default {
     },
   },
   watch: {
-    albums(current) {
-      this.rankedAlbums = current.map((e, index) => { e.rank = index + 1; return e; });
+    albums: {
+      handler(current) {
+        this.rankedAlbums = current.map((e, index) => { e.rank = index + 1; return e; });
+      },
+      immediate: true,
     },
   },
   beforeMount() {
