@@ -50,6 +50,7 @@ export default Vue.extend({
         :value="$store.state.albumsSearch"
         outlined
         label="Search"
+        dense
         clearable
         single-line
         hide-details
