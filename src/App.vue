@@ -1,3 +1,31 @@
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'App',
+  data() {
+    return {
+      transitionName: 'scroll-x-transition',
+    };
+  },
+  methods: {
+    goHome() {
+      if (this.$route.path !== '/') this.$router.push('/');
+    },
+    updateAlbumsSearch(payload: string) {
+      this.$store.commit('setAlbumsSearch', payload);
+    },
+  },
+  watch: {
+    $route(to, from) {
+      const toDepth = to.path.split('/').length;
+      const fromDepth = from.path.split('/').length;
+      this.transitionName = toDepth < fromDepth ? 'scroll-x-transition' : 'scroll-x-reverse-transition';
+    },
+  },
+});
+</script>
+
 <template>
   <v-app>
     <v-app-bar
@@ -8,7 +36,7 @@
 
       <v-btn
         color="primary"
-        class="d-flex align-center"
+        class="d-flex align-center mr-2"
         @click="goHome"
       >
         <v-icon>mdi-music-box-multiple</v-icon>
@@ -37,31 +65,3 @@
     </v-content>
   </v-app>
 </template>
-
-<script lang="ts">
-import Vue from 'vue';
-
-export default Vue.extend({
-  name: 'App',
-  data() {
-    return {
-      transitionName: 'scroll-x-transition',
-    };
-  },
-  methods: {
-    goHome() {
-      if (this.$route.path !== '/') this.$router.push('/');
-    },
-    updateAlbumsSearch(payload: string) {
-      this.$store.commit('setAlbumsSearch', payload);
-    },
-  },
-  watch: {
-    $route(to, from) {
-      const toDepth = to.path.split('/').length;
-      const fromDepth = from.path.split('/').length;
-      this.transitionName = toDepth < fromDepth ? 'scroll-x-transition' : 'scroll-x-reverse-transition';
-    },
-  },
-});
-</script>
