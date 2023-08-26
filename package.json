@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build-docs": "vue-cli-service build --dest docs",
+    "build": "vue-cli-service build --openssl-legacy-provider",
+    "build-docs": "vue-cli-service build --dest docs --openssl-legacy-provider",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
@@ -51,6 +51,6 @@
     ]
   },
   "engines": {
-    "node": "18"
+    "node": "^18.x, 19"
   }
 }
