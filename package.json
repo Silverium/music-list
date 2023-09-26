@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --openssl-legacy-provider",
-    "build-docs": "vue-cli-service build --dest docs --openssl-legacy-provider",
+    "serve": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
+    "build-docs": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build --dest docs",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
